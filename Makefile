@@ -8,7 +8,7 @@ SBP_SPEC_DIR := $(SWIFTNAV_ROOT)/spec/yaml/swiftnav/sbp/
 SBP_GEN_BIN := python sbpg/generator.py
 CHANGELOG_GITHUB_TOKEN := CHANGELOG_GITHUB_TOKEN
 
-.PHONY: help all c python docs pdf html test release dist
+.PHONY: help all c python docs pdf html test release dist java
 
 help:
 	@echo
@@ -25,6 +25,7 @@ help:
 	@echo "  html      to make all HTML language docs"
 	@echo "  pdf       to make SBP LaTeX datasheet"
 	@echo "  python    to make Python bindings"
+	@echo "  java      to make Java bindings"
 	@echo "  release   to handle some release tasks"
 	@echo "  test      to run all tests"
 	@echo
@@ -54,6 +55,18 @@ python:
 	cd $(SWIFTNAV_ROOT);
 	@echo
 	@echo "Finished! Please check $(SWIFTNAV_ROOT)/python/sbp."
+
+java:
+	@echo
+	@echo "Generating Java bindings..."
+	@echo
+	cd $(SWIFTNAV_ROOT)/generator; \
+	$(SBP_GEN_BIN) -i $(SBP_SPEC_DIR) \
+		       -o $(SWIFTNAV_ROOT)/java/src/ \
+		       --java;\
+	cd $(SWIFTNAV_ROOT);
+	@echo
+	@echo "Finished! Please check $(SWIFTNAV_ROOT)/java/src/sbp."
 
 dist:
 	@echo

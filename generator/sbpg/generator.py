@@ -18,9 +18,10 @@ import argparse
 import os
 import pprint
 import sbpg.specs.yaml2 as yaml
-import sbpg.targets.python as py
 import sbpg.targets.c as c
+import sbpg.targets.java as java
 import sbpg.targets.latex as tex
+import sbpg.targets.python as py
 
 def get_args():
   parser = argparse.ArgumentParser(description='Swift Navigation SBP generator.')
@@ -40,6 +41,9 @@ def get_args():
   parser.add_argument('--c',
                       action="store_true",
                       help='Target language: C.')
+  parser.add_argument('--java',
+                      action="store_true",
+                      help='Target language: Java!')
   parser.add_argument('--latex',
                       action="store_true",
                       help='Target language: LaTeX.')
@@ -55,7 +59,8 @@ def main():
     # Parse and validate arguments.
     args = get_args().parse_args()
     verbose = args.verbose
-    assert args.python or args.c or args.latex, "Please specify a target language."
+    assert args.python or args.c or args.latex or args.java, \
+      "Please specify a target language."
     input_file = os.path.abspath(args.input_file[0])
     assert len(args.input_file) == 1
     assert os.path.exists(input_file), \
@@ -82,6 +87,8 @@ def main():
           py.render_source(output_dir, parsed)
         elif args.c:
           c.render_source(output_dir, parsed)
+        elif args.java:
+          java.render_source(output_dir, parsed)
   except KeyboardInterrupt:
     pass
 
